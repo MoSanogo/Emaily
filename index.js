@@ -1,11 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport');
 const app = express();
+app.use(helmet());
 app.use(
 	cookieSession({
 		maxAge: 30 * 24 * 60 * 60 * 1000,
