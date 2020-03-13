@@ -18,5 +18,11 @@ mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: tru
 app.use(passport.initialize());
 app.use(passport.session());
 require('./routes/authRoutes')(app);
+app.get('/api/logout', (req, res, next) => {
+	res.send('We are done ,buudies!!');
+});
+app.get('/api/current_user', (req, res, next) => {
+	res.send(req.user);
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
