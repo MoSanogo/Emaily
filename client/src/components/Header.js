@@ -4,8 +4,8 @@ export default class Header extends Component {
 	render() {
 		return (
 			<nav>
-				<div class="nav-wrapper">
-					<a href="#" className="left brand-logo">
+				<div className="nav-wrapper">
+					<a href="/api/current_user" className="left brand-logo">
 						Emaily
 					</a>
 					<ul id="nav-mobile" className="right hide-on-med-and-down">
