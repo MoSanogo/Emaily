@@ -2,15 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cookieSession = require('cookie-session');
-const { json } = require('express');
+const { json, urlencoded } = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Surveys');
 require('./services/passport');
 
 const app = express();
 app.use(json ? json() : bodyParser.json());
+app.use(urlencoded ? urlencoded({ extended: true }) : bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(
 	cookieSession({
@@ -23,6 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
 	const path = require('path');

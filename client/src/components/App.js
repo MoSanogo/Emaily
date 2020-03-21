@@ -4,39 +4,37 @@ import Header from './Header';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Landing from './Landing';
+import Dashboard from './Dashboard';
+import SurveyNew from './surveys/SurveyNew';
 
-const Dashboard = () => <h2>Dashboard </h2>;
-const SurveyNew = () => <h2>SurveyNew </h2>;
-const Footer = () => {
-	return (
-		<footer
-			style={{
-				boxSizing: 'border-box',
-				marginBottom: '0.08rem',
-				marginTop: '50vh',
-				textAlign: 'center',
-				backgroundColor: 'rgb(238, 110, 115)',
-				height: 'auto',
-				color: 'white',
-				marginLeft: '0.8rem',
-				marginRight: '0.8rem',
-				padding: '0.25rem',
-				position: 'sticky'
-				// bottom: '0',
-				// top: '0'
-			}}
-		>
-			<p>Powered by Modibo Sanogo</p>
-		</footer>
-	);
-};
+// const Footer = () => {
+// 	return (
+// 		<footer
+// 			style={{
+// 				boxSizing: 'border-box',
+// 				marginBottom: '0.08rem',
+// 				marginTop: '50vh',
+// 				textAlign: 'center',
+// 				backgroundColor: 'rgb(238, 110, 115)',
+// 				height: 'auto',
+// 				color: 'white',
+// 				marginLeft: '0.8rem',
+// 				marginRight: '0.8rem',
+// 				padding: '0.25rem',
+// 				position: 'sticky'
+// 				// bottom: '0',
+// 				// top: '0'
+// 			}}
+// 		>
+// 			<p>Powered by Modibo Sanogo</p>
+// 		</footer>
+// 	);
+// };
 class App extends Component {
 	componentDidMount() {
 		this.props.fetchUser();
 	}
 	render() {
-		console.log(process.env.DSF);
-		console.log(process.env);
 		return (
 			<div>
 				<BrowserRouter>
@@ -45,7 +43,7 @@ class App extends Component {
 						<Route exact path="/" component={Landing} />
 						<Route exact path="/surveys" component={Dashboard} />
 						<Route exact path="/surveys/new" component={SurveyNew} />
-						<Footer />
+						{/* <Footer /> */}
 					</div>
 				</BrowserRouter>
 			</div>

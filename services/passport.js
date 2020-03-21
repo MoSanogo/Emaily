@@ -3,6 +3,7 @@ const GoogleStrategy = require('passport-google-oauth20');
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const User = mongoose.model('users');
+const WelcomeMailer = require('./WelcomeMailer');
 passport.serializeUser((user, done) => {
 	done(null, user.id);
 });
@@ -27,6 +28,8 @@ passport.use(
 			}
 			//we don't have a user record with this ID.
 			const user = await new User({ googleId: profile.id }).save();
+			const welcomeMessage = new WelcomeMailer('Welcome to Emaily.come', 'modisalhydro@gmail.com', `<h2>Hello User</h2>`);
+			await welcomeMessage.send();
 			done(null, user);
 		}
 	)

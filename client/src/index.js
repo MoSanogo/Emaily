@@ -7,8 +7,11 @@ import ReduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 import * as serviceWorker from './serviceWorker';
+// import axios from 'axios';
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
+// const survey = { title: 'my title', subject: 'my subject', recipients: 'modisalhydro@gmail.com', body: 'Here is the body of your email' };
+// console.log(axios.post('/api/surveys', survey));
 ReactDOM.render(
 	<Provider store={store}>
 		<App />
