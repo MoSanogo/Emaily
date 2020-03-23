@@ -8,8 +8,10 @@ import ReduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 import * as serviceWorker from './serviceWorker';
+import axios from 'axios';
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
+window.axios = axios;
 ReactDOM.render(
 	<Provider store={store}>
 		<App />

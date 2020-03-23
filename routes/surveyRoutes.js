@@ -8,6 +8,14 @@ const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 module.exports = (app) => {
+	app.get('/api/surveys', requireLogin, async (req, res, next) => {
+		const surveys = await Survey.find({
+			_user: req.user.id
+		}).select({
+			recipients: false
+		});
+		res.send(surveys);
+	});
 	app.post('/api/surveys', requireLogin, requireCredits, async (req, res, next) => {
 		const { title, subject, body, recipients } = req.body;
 		const survey = new Survey({
@@ -54,12 +62,12 @@ module.exports = (app) => {
 					},
 					{
 						$inc: { [choice]: 1 },
-						$set: { 'recipients.$.responded': true }
+						$set: { 'recipients.$.responded': true },
+						lastResponded: new Date()
 					}
 				).exec();
 			})
 			.value();
-		console.log('done');
 		res.send({});
 	});
 };
