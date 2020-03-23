@@ -48,6 +48,12 @@ export default () => {
 										<p className="col s12 hide-on-med-and-up">Linkedin</p>
 									</a>
 								</div>
+								<div className="col s12 m4">
+									<a href="tel:+14389853655" rel="noopener noreferrer" target="_blank" className="white-text">
+										<p className="col s12 hide-on-med-and-up">Call Me</p>
+										<i className="material-icons hide-on-med-and-up ">call</i>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>

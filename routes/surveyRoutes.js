@@ -30,20 +30,36 @@ module.exports = (app) => {
 			res.status(422).send(err);
 		}
 	});
-	app.get('/api/surveys/thanks', (req, res, next) => {
+	app.get('/api/surveys/:surveyId/:choice', (req, res, next) => {
 		res.send('Thanks for voting');
 	});
 	app.post('/api/surveys/webhooks', (req, res, next) => {
-		const events = _.map(req.body, ({ email, url }) => {
-			const pathname = new URL(url).pathname;
-			const p = new Path('/api/surveys/:surveyId/:choice');
-			console.log(p.test(pathname));
-			const match = p.test(pathname);
-			if (match) {
-				return { email, surveyId: match.surveyId, choice: match.choice };
-			}
-		});
-		console.log(events);
+		const p = new Path('/api/surveys/:surveyId/:choice');
+		_.chain(req.body)
+			.map(({ email, url }) => {
+				const match = p.test(new URL(url).pathname);
+				if (match) {
+					return { email, surveyId: match.surveyId, choice: match.choice };
+				}
+			})
+			.compact()
+			.uniqBy('email', 'surveyId')
+			.each(({ surveyId, email, choice }) => {
+				Survey.updateOne(
+					{
+						_id: surveyId,
+						recipients: {
+							$elemMatch: { email, responded: false }
+						}
+					},
+					{
+						$inc: { [choice]: 1 },
+						$set: { 'recipients.$.responded': true }
+					}
+				).exec();
+			})
+			.value();
+		console.log('done');
 		res.send({});
 	});
 };
