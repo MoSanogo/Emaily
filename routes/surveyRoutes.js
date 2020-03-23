@@ -6,8 +6,7 @@ const requireCredits = require('../middlewares/requireCredits');
 const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
-console.log(new URL('https://example.com/bar').pathname);
-console.dir(URL);
+const { URL } = require('url');
 module.exports = (app) => {
 	app.get('/api/surveys', requireLogin, async (req, res, next) => {
 		const surveys = await Survey.find({
@@ -44,17 +43,16 @@ module.exports = (app) => {
 	});
 	app.post('/api/surveys/webhooks', (req, res, next) => {
 		const p = new Path('/api/surveys/:surveyId/:choice');
-		_.chain(req.body)
+		const result = _.chain(req.body)
 			.map(({ email, url }) => {
-				const match = p.test(new URL(url).pathname);
-				if (match) {
+				if (url) {
+					const match = p.test(new URL(url).pathname);
 					return { email, surveyId: match.surveyId, choice: match.choice };
 				}
 			})
 			.compact()
 			.uniqBy('email', 'surveyId')
 			.each(({ surveyId, email, choice }) => {
-				console.log({ surveyId, email, choice });
 				Survey.updateOne(
 					{
 						_id: surveyId,
@@ -70,6 +68,7 @@ module.exports = (app) => {
 				).exec();
 			})
 			.value();
-		res.send({});
+
+		res.send(result);
 	});
 };
