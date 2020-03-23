@@ -1,12 +1,13 @@
 const _ = require('lodash');
 const { Path } = require('path-parser');
-const { URL } = require('url');
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
 const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
+console.log(new URL('https://example.com/bar').pathname);
+console.dir(URL);
 module.exports = (app) => {
 	app.get('/api/surveys', requireLogin, async (req, res, next) => {
 		const surveys = await Survey.find({
@@ -53,6 +54,7 @@ module.exports = (app) => {
 			.compact()
 			.uniqBy('email', 'surveyId')
 			.each(({ surveyId, email, choice }) => {
+				console.log({ surveyId, email, choice });
 				Survey.updateOne(
 					{
 						_id: surveyId,
