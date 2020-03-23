@@ -47,7 +47,9 @@ module.exports = (app) => {
 			.map(({ email, url }) => {
 				if (url) {
 					const match = p.test(new URL(url).pathname);
-					return { email, surveyId: match.surveyId, choice: match.choice };
+					if (match) {
+						return { email, surveyId: match.surveyId, choice: match.choice };
+					}
 				}
 			})
 			.compact()
