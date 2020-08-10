@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSurveys } from '../../actions';
+import { Link } from 'react-router-dom';
 class SurveysList extends Component {
 	componentDidMount() {
 		this.props.fetchSurveys();
@@ -21,6 +22,9 @@ class SurveysList extends Component {
 						<a href="#" className="white-text">
 							No : {no}
 						</a>
+						<Link className="btn-flat right">
+							<i className="meduim material-icons left">delete</i>
+						</Link>
 					</div>
 				</div>
 			);

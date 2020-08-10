@@ -4,3 +4,4 @@ module.exports = (req, res, next) => {
 	}
 	next();
 };
+//We could have used the property Authenticated property on req object to check if the user is logged in or not. req.Authenticated();

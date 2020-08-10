@@ -17,18 +17,25 @@ passport.use(
 			clientID: keys.googleClientID,
 			clientSecret: keys.googleClientSecret,
 			callbackURL: '/auth/google/callback',
-			proxy: true
+			proxy: true,
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			const existingUser = await User.findOne({ googleId: profile.id });
-
+			console.log(profile);
+			console.log(profile.emails[0].value);
 			if (existingUser) {
 				//We already have  a record with the given profile ID
 				return done(null, existingUser);
 			}
 			//we don't have a user record with this ID.
 			const user = await new User({ googleId: profile.id }).save();
-			const welcomeMessage = new WelcomeMailer('Welcome to Emaily.come', 'modisalhydro@gmail.com', `<h2>Hello User</h2>`);
+			const welcomeMessage = new WelcomeMailer(
+				'Welcome to Emaily.come',
+				`${profile.emails[0].value}`,
+				`<div style="text-align :center"><h3>Welcome ${profile.displayName}
+				</h3>
+				<p>Thank for choosing as survey provider. From Modibo Sanogo , application Owner .</p></div>`
+			);
 			await welcomeMessage.send();
 			done(null, user);
 		}

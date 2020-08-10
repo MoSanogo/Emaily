@@ -70,7 +70,7 @@ module.exports = (app) => {
 				).exec();
 			})
 			.value();
-
+		console.log(req.body);
 		res.send({});
 	});
 };
